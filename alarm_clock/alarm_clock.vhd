@@ -30,8 +30,9 @@ architecture rtl of alarm_clock is
     signal state   : state_type;
     signal snooze_s, cancel_s : std_logic;
     signal clock_rtc : unsigned(30 downto 0) := (others => '0'); --counts up to 24 * 50e6
+    signal clock_snooze : unsigned(25 downto 0) := (others => '0'); --counts up to 24 * 50e6
 
-    constant SEC_SCALE : integer := 50;
+    constant SEC_SCALE : integer := 50000000;
     
 begin
     snooze_s <= not snooze;
@@ -40,8 +41,10 @@ begin
     -- Logic to advance to the next state
     process (clk, rst)
     begin
-        if rst = '1' then
+        if rst = '0' then
             state <= IDLE;
+            clock_rtc <= (others => '0');
+            clock_snooze <= (others => '0');
         elsif (rising_edge(clk)) then
         
         
@@ -58,7 +61,6 @@ begin
                     if clock_rtc = 5*SEC_SCALE then
                         state <= BUZZER_STATE;
                     end if;
-                
                     buzzer <= '0';
                 
                 when BUZZER_STATE=>
@@ -72,6 +74,12 @@ begin
                 
                 when MIN5 =>
                 --alarm silent, wait for 1 sec timer
+                    if clock_snooze = 1*SEC_SCALE-1 then
+                        clock_snooze <= (others => '0');
+                        state <= BUZZER_STATE;
+                    else
+                        clock_snooze <= clock_snooze + 1;
+                    end if;
                     buzzer <= '0';
                 
                 
