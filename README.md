@@ -7,5 +7,6 @@ Some examples are solutions till smaller VHDL-coding assignments:
 |[exercise_first_test.md](first_test/exercise_first_test.md)| first_test |
 |[exercise_car_break.md](CarBreak/exercise_car_break.md)| CarBreak |
 |[excercise_calculator.md](calculator/excercise_calculator.md)| calculator |
+|[excercise_codelock.md](codelock/excercise_codelock.md)| codelock |
 
-www.yrgo.se
+[www.yrgo.se](www.yrgo.se)
